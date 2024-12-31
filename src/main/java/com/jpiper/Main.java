@@ -28,6 +28,9 @@ public class Main {
 
         String teamStats_1 = APICalls.getTeamStats(teamIDs.getLeft());
         String teamStats_2 = APICalls.getTeamStats(teamIDs.getRight());
+
+        APICalls.parseTeamStats(teamStats_1, teamInfo_1.getLeft());
+        APICalls.parseTeamStats(teamStats_2, teamInfo_2.getLeft());
     }
 
     private static void printVersion() {
@@ -39,7 +42,16 @@ public class Main {
             }
             properties.load(input);
             String version = properties.getProperty("version");
-            System.out.println("NFL Parlay Helper: v" + version + "\n");
+
+            System.out.println("  /$$   /$$ /$$$$$$$$ /$$             /$$   /$$ /$$$$$$$$ /$$       /$$$$$$$  /$$$$$$$$ /$$$$$$$");
+            System.out.println(" | $$$ | $$| $$_____/| $$            | $$  | $$| $$_____/| $$      | $$__  $$| $$_____/| $$__  $$");
+            System.out.println(" | $$$$| $$| $$      | $$            | $$  | $$| $$      | $$      | $$  \\ $$| $$      | $$  \\ $$");
+            System.out.println(" | $$ $$ $$| $$$$$   | $$            | $$$$$$$$| $$$$$   | $$      | $$$$$$$/| $$$$$   | $$$$$$$/");
+            System.out.println(" | $$  $$$$| $$__/   | $$            | $$__  $$| $$__/   | $$      | $$____/ | $$__/   | $$__  $$");
+            System.out.println(" | $$\\  $$$| $$      | $$            | $$  | $$| $$      | $$      | $$      | $$      | $$  \\ $$");
+            System.out.println(" | $$ \\  $$| $$      | $$$$$$$$      | $$  | $$| $$$$$$$$| $$$$$$$$| $$      | $$$$$$$$| $$  | $$");
+            System.out.println(" |__/  \\__/|__/      |________/      |__/  |__/|________/|________/|__/      |________/|__/  |__/");
+            System.out.println("\nNFL Parlay Helper: v" + version + "\n");
         } catch (IOException ex) {
             ex.printStackTrace();
         }

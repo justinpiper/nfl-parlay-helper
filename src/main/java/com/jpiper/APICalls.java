@@ -38,6 +38,8 @@ public class APICalls {
 
             // Check if the response is successful
             if (response.statusCode() == 200) {
+                System.out.println("[DATA] Success!");
+
                 // Parse the JSON response
                 String jsonResponse = response.body();
                 //System.out.println("[INFO] Response body: " + jsonResponse);
@@ -100,6 +102,8 @@ public class APICalls {
 
             // Check if the response is successful
             if (response.statusCode() == 200) {
+                System.out.println("[DATA] Success!");
+
                 // Parse the JSON response
                 String jsonResponse = response.body();
                 //System.out.println("[INFO] Response body: " + jsonResponse);
@@ -160,6 +164,8 @@ public class APICalls {
 
             // Check if the response is successful
             if (response.statusCode() == 200) {
+                System.out.println("[DATA] Success!");
+
                 // Parse the JSON response
                 String jsonResponse = response.body();
                 //System.out.println("[INFO] Response body: " + jsonResponse);
@@ -177,42 +183,49 @@ public class APICalls {
         return null;
     }
 
-    public static double[] parseTeamStats(String jsonBody) throws JsonProcessingException {
-        System.out.println("[INFO] Parsing out team statistics . . .");
+    public static double[] parseTeamStats(String jsonBody, String teamName) throws JsonProcessingException {
+        System.out.println("[INFO] Parsing out team statistics for the " + teamName + " . . .");
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(jsonBody);
 
+        JsonNode splitsNode = rootNode.get("splits");
+        JsonNode categoriesNode = splitsNode.get("categories");
+
+        JsonNode passingNode = categoriesNode.get(1);
+        JsonNode passingStatsNode = passingNode.get("stats");
+
+        JsonNode rushingNode = categoriesNode.get(2);
+        JsonNode rushingStatsNode = rushingNode.get("stats");
+
+        JsonNode redZoneNode = categoriesNode.get(10);
+        JsonNode redZoneStatsNode = redZoneNode.get("stats");
+
         // #0 - Rushing Yards Allowed Per Attempt
 
-        // #1 - League Average Rushing Yards Allowed Per Attempt
+        // #1 - Tight End Yards Allowed
 
-        // #2 - Tight End Yards Allowed
+        // #2 - Total Yards Allowed
 
-        // #3 - Total Yards Allowed
+        // #3 - Yards Allowed on Passes > 20 Yards
 
-        // #4 - Yards Allowed on Passes > 20 Yards
+        // #4 - Rushing Yards per Carry
+        double rushYardsPerAtt = rushingStatsNode.get(28).get("value").asDouble();
+        System.out.println("[DATA] Rushing Yards per Attempt: " + rushYardsPerAtt + " yds");
 
-        // #5 - Rushing Yards per Carry
+        // #5 - Passing Yards per Attempt
+        double passYardsPerAtt = passingStatsNode.get(40).get("value").asDouble();
+        System.out.println("[DATA] Passing Yards per Attempt: " + passYardsPerAtt + " yds");
 
-        // #6 - League Average Rushing Yards per Carry
+        // #6 - Red Zone Touchdown Percentage
+        double redZoneTouchdownPct = redZoneStatsNode.get(13).get("value").asDouble();
+        System.out.println("[DATA] Red Zone Touchdown Percentage: " + redZoneTouchdownPct + "%");
 
-        // #7 - Passing Yards per Attempt
+        // #8 - League Average Rushing Yards Allowed Per Attempt
 
-        // #8 - League Average Passing Yards per Attempt
+        // #9 - League Average Rushing Yards per Carry
 
-        // #9 - Touchdowns Scored in Red Zone
-
-        // #10 - Red Zone Attempts
-
-        JsonNode teamNode = rootNode.get("team");
-        JsonNode recordNode = teamNode.get("record");
-        JsonNode itemsNode = recordNode.get("items");
-        JsonNode itemsArray = itemsNode.get(0);
-
-        // Extract individual values
-        String teamName = teamNode.get("displayName").asText();
-        String recordText = itemsArray.get("summary").asText();
+        // #10 - League Average Passing Yards per Attempt
 
         System.out.println("[INFO] Complete!");
 
